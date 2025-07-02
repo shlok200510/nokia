@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Profile</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .profile-card {
+      background-color: white;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      text-align: center;
+      width: 300px;
+    }
+    .profile-photo {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 4px solid #3b82f6;
+    }
+    h2 {
+      margin: 10px 0;
+      color: #111827;
+    }
+    p {
+      color: #4b5563;
+      margin: 5px 0;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+      margin-top: 10px;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="profile-card">
+    <img class="profile-photo" id="photo" src="" alt="Profile Photo">
+    <h2 id="name">Loading...</h2>
+    <p id="email">Loading...</p>
+    <h4>Interests</h4>
+    <ul id="interests"></ul>
+  </div>
+
+  <script>
+    // Fetch data from the backend API
+    fetch("/api/profile")
+      .then(res => res.json())
+      .then(profile => {
+        document.getElementById("name").textContent = profile.name;
+        document.getElementById("email").textContent = profile.email;
+        document.getElementById("photo").src = profile.photo;
+
+        const interestsList = document.getElementById("interests");
+        profile.interests.forEach(interest => {
+          const li = document.createElement("li");
+          li.textContent = `• ${interest}`;
+          interestsList.appendChild(li);
+        });
+      })
+      .catch(err => {
+        console.error("Error loading profile:", err);
+      });
+  </script>
+
+</body>
+</html>
